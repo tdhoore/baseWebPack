@@ -10,16 +10,14 @@ const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
-
-
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
 const imageminJpegRecompress = require("imagemin-jpeg-recompress");
 const CopyPlugin = require('copy-webpack-plugin');
-const ImageminWebpWebpackPlugin= require("imagemin-webp-webpack-plugin");
+const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin")
 
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const FontminPlugin = require('fontmin-webpack');
 
 const PATHS = {
   src: path.join(__dirname, `src`),
@@ -85,7 +83,7 @@ const commonConfig = {
         use: [`babel-loader`],
       },
       {
-        test: /\.(woff|woff2)$/,
+        test: /\.(eot|ttf|woff|woff2)$/,
         loader: `url-loader`,
         options: {
           limit: 1000,
@@ -111,6 +109,10 @@ const commonConfig = {
       filename: `./dist/css/main.min.[hash].css`,
     }),
     new ImageminWebpWebpackPlugin(),
+    new FontminPlugin({
+      autodetect: true, // automatically pull unicode characters from CSS
+      glyphs: ['\uf0c8' /* extra glyphs to include */],
+    }),
     new CopyPlugin({
       patterns: [
         {
@@ -119,7 +121,7 @@ const commonConfig = {
         }
       ],
     }),
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
+    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
   ],
   optimization: {
     minimize: true,

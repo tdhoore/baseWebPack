@@ -39,7 +39,7 @@ const commonConfig = {
         test: /\.(sass|scss)$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
-      {
+      /*{
         test: /\.(jpe?g|png|gif|webp|svg)$/,
         use: [
           {
@@ -76,7 +76,7 @@ const commonConfig = {
             },
           },
         ],
-      },
+      },*/
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
@@ -108,20 +108,25 @@ const commonConfig = {
     new MiniCssExtractPlugin({
       filename: `./dist/css/main.min.[hash].css`,
     }),
-    new ImageminWebpWebpackPlugin(),
     new FontminPlugin({
       autodetect: true, // automatically pull unicode characters from CSS
       glyphs: ['\uf0c8' /* extra glyphs to include */],
     }),
+    /*
+    new ImageminWebpWebpackPlugin(),
+    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
     new CopyPlugin({
       patterns: [
         {
           from: path.join(PATHS.src, `assets/img`),
           to: path.join(PATHS.dist, `assets/img`)
+        },
+        {
+          from: path.join(PATHS.src, `assets/fonts`),
+          to: path.join(PATHS.dist, `assets/fonts`)
         }
       ],
-    }),
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
+    }),*/
   ],
   optimization: {
     minimize: true,
@@ -140,10 +145,10 @@ const commonConfig = {
 const productionConfig = merge([
   {
     plugins: [
-      new ImageminPlugin({
+      /*new ImageminPlugin({
         test: /\.(jpe?g)$/i,
         plugins: [imageminJpegRecompress({})],
-      }),
+      }),*/
     ],
   },
 ]);
